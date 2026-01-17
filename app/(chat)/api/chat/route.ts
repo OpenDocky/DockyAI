@@ -70,6 +70,13 @@ export async function POST(request: Request) {
       return new ChatSDKError("unauthorized:chat").toResponse();
     }
 
+    // Ensure user exists in local DB before saving any related records (Chat, Message, etc.)
+    try {
+      await getOrCreateUser(userId);
+    } catch (dbError) {
+      console.error("Failed to provision user in local DB:", dbError);
+    }
+
     const userType: "regular" = "regular";
 
     if (!process.env.HUGGING_FACE_API_KEY) {

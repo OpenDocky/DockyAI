@@ -53,8 +53,12 @@ export async function POST(request: Request) {
   const { userId } = await auth();
 
   if (!userId) {
-    return new ChatSDKError("not_found:document").toResponse();
+    return new ChatSDKError("unauthorized:document").toResponse();
   }
+
+  // Ensure user exists in local DB
+  const { getOrCreateUser } = await import("@/lib/db/queries");
+  await getOrCreateUser(userId);
 
   const {
     content,
