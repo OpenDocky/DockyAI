@@ -71,6 +71,13 @@
       "when": 1768642970390,
       "tag": "0009_huge_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1768655114989,
+      "tag": "0010_exotic_vision",
+      "breakpoints": true
     }
   ]
 }
