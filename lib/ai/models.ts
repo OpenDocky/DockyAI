@@ -9,54 +9,43 @@ export type ChatModel = {
 };
 
 export const chatModels: ChatModel[] = [
-  // Meta
+  // Meta Llama
   {
     id: "meta-llama/Llama-3.1-8B-Instruct",
     name: "Llama 3.1 8B",
     provider: "meta",
-    description: "Meta's most advanced 8B parameter model",
+    description: "Fast and efficient Llama model for daily tasks",
   },
-  // Mistral
   {
-    id: "mistralai/Mistral-7B-Instruct-v0.3",
-    name: "Mistral 7B v0.3",
-    provider: "mistral",
-    description: "Mistral's popular small-footprint model",
+    id: "meta-llama/Llama-3.1-70B-Instruct",
+    name: "Llama 3.1 70B",
+    provider: "meta",
+    description: "Highly capable for complex reasoning and tasks",
   },
-  // Google
   {
-    id: "google/gemma-2-9b-it",
-    name: "Gemma 2 9B",
-    provider: "google",
-    description: "Google's high-performance 9B model",
+    id: "NousResearch/Hermes-3-Llama-3.1-8B",
+    name: "Hermes 3 (Llama 8B)",
+    provider: "meta",
+    description: "Llama 3.1 fine-tuned for better instruction following",
   },
   // Qwen (Alibaba)
   {
     id: "Qwen/Qwen2.5-7B-Instruct",
     name: "Qwen 2.5 7B",
     provider: "alibaba",
-    description: "Alibaba's latest 7B performance model",
+    description: "Alibaba's latest efficient 7B model",
   },
-  // NousResearch
   {
-    id: "NousResearch/Hermes-3-Llama-3.1-8B",
-    name: "Hermes 3 Llama 3.1",
-    provider: "nous",
-    description: "Highly capable model fine-tuned for reasoning",
+    id: "Qwen/Qwen2.5-32B-Instruct",
+    name: "Qwen 2.5 32B",
+    provider: "alibaba",
+    description: "Perfect balance between speed and performance",
   },
-  // Microsoft
   {
-    id: "microsoft/Phi-3-mini-4k-instruct",
-    name: "Phi-3 Mini",
-    provider: "microsoft",
-    description: "Lightweight and surprisingly capable",
-  },
-  // Community
-  {
-    id: "HuggingFaceH4/zephyr-7b-beta",
-    name: "Zephyr 7B Beta",
-    provider: "huggingface",
-    description: "Popular model for chat and instruction following",
+    id: "Qwen/Qwen2.5-72B-Instruct",
+    name: "Qwen 2.5 72B",
+    provider: "alibaba",
+    description: "Most powerful Qwen model for expert results",
   },
 ];
 
