@@ -148,7 +148,13 @@ export async function POST(request: Request) {
       originalMessages: isToolApprovalFlow ? uiMessages : undefined,
       execute: async ({ writer: dataStream }) => {
         console.log("Starting stream with model:", selectedChatModel);
-        const [userData] = await getUserById(session.user.id);
+        let userData = null;
+        try {
+          const users = await getUserById(session.user.id);
+          userData = users[0];
+        } catch (dbError) {
+          console.error("Failed to fetch user settings, using defaults:", dbError);
+        }
 
         try {
           const result = await streamText({
