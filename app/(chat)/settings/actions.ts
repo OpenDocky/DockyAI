@@ -20,12 +20,9 @@ export async function updateUserSettings(formData: FormData) {
     });
 
     revalidatePath("/settings");
-    
-    // Return success - Next.js will handle the redirect
-    return { success: true };
   } catch (error) {
     console.error("Failed to update settings:", error);
-    return { success: false, error: "Failed to save settings" };
+    throw error;
   }
 }
 
