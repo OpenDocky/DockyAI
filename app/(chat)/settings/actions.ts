@@ -1,3 +1,5 @@
+"use server";
+
 import { auth } from "@/app/(auth)/auth";
 import { getUserById, updateUserById } from "@/lib/db/queries";
 import { revalidatePath } from "next/cache";

@@ -12,7 +12,55 @@ export default async function SettingsPage() {
     redirect("/");
   }
 
-  const settings = await getUserSettings();
+  let settings;
+  let hasError = false;
+
+  try {
+    settings = await getUserSettings();
+  } catch (error) {
+    console.error("Failed to load settings:", error);
+    hasError = true;
+    settings = {
+      customInstructions: "",
+      useLocation: true,
+    };
+  }
+
+  if (hasError) {
+    return (
+      <div className="container max-w-2xl py-10 space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground">
+            AI personality and privacy settings
+          </p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>⚠️ Database Sync in Progress</CardTitle>
+            <CardDescription>
+              Your settings are being synchronized. This usually takes 1-2 minutes.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm">
+              The database is still updating with the new settings columns. 
+              Please wait a moment and refresh this page.
+            </p>
+            <div className="flex gap-2">
+              <Button asChild variant="outline">
+                <a href="/settings">Refresh Page</a>
+              </Button>
+              <Button asChild variant="outline">
+                <a href="/">Back to Chat</a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container max-w-2xl py-10 space-y-8">
