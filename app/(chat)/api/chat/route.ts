@@ -70,6 +70,13 @@ export async function POST(request: Request) {
 
     const userType: UserType = session.user.type;
 
+    if (!process.env.HUGGING_FACE_API_KEY) {
+      return new ChatSDKError(
+        "bad_request:api",
+        "HUGGING_FACE_API_KEY is missing. Please add it to your environment variables."
+      ).toResponse();
+    }
+
     const messageCount = await getMessageCountByUserId({
       id: session.user.id,
       differenceInHours: 24,
