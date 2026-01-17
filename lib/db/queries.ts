@@ -67,6 +67,28 @@ export async function getUser(email: string): Promise<User[]> {
   }
 }
 
+export async function getUserById(id: string): Promise<User[]> {
+  try {
+    const db = getDb();
+    return await db.select().from(user).where(eq(user.id, id));
+  } catch (_error) {
+    if (_error instanceof ChatSDKError) throw _error;
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to get user by id"
+    );
+  }
+}
+
+export async function updateUserById(id: string, values: Partial<User>) {
+  try {
+    const db = getDb();
+    return await db.update(user).set(values).where(eq(user.id, id));
+  } catch (_error) {
+    throw new ChatSDKError("bad_request:database", "Failed to update user");
+  }
+}
+
 export async function createUser(email: string, password: string) {
   const hashedPassword = generateHashedPassword(password);
 
@@ -85,7 +107,7 @@ export async function createGuestUser() {
   try {
     const db = getDb();
     console.log("Creating guest user with email:", email);
-    return await db.insert(user).values({ email, password }).returning({
+    return await db.insert(user).values({ email, password, useLocation: true }).returning({
       id: user.id,
       email: user.email,
     });

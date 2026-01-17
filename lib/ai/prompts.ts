@@ -58,12 +58,18 @@ About the origin of user's request:
 
 export const systemPrompt = ({
   requestHints,
+  customInstructions,
+  useLocation,
 }: {
   selectedChatModel: string;
   requestHints: RequestHints;
+  customInstructions?: string;
+  useLocation?: boolean;
 }) => {
-  const requestPrompt = getRequestPromptFromHints(requestHints);
-  return `${regularPrompt}\n\n${requestPrompt}`;
+  const requestPrompt = useLocation !== false ? getRequestPromptFromHints(requestHints) : "";
+  const personalityPrompt = customInstructions ? `\n\nUser's custom instructions/personality: ${customInstructions}` : "";
+  
+  return `${regularPrompt}\n\n${requestPrompt}${personalityPrompt}`;
 };
 
 export const codePrompt = `

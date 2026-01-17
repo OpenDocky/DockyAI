@@ -24,6 +24,7 @@ import {
   getChatById,
   getMessageCountByUserId,
   getMessagesByChatId,
+  getUserById,
   saveChat,
   saveMessages,
   updateChatTitleById,
@@ -147,10 +148,17 @@ export async function POST(request: Request) {
       originalMessages: isToolApprovalFlow ? uiMessages : undefined,
       execute: async ({ writer: dataStream }) => {
         console.log("Starting stream with model:", selectedChatModel);
+        const [userData] = await getUserById(session.user.id);
+
         try {
           const result = await streamText({
             model: getLanguageModel(selectedChatModel),
-            system: systemPrompt({ selectedChatModel, requestHints }),
+            system: systemPrompt({ 
+              selectedChatModel, 
+              requestHints,
+              customInstructions: userData?.customInstructions || undefined,
+              useLocation: userData?.useLocation ?? true,
+            }),
             messages: modelMessages,
             stopWhen: stepCountIs(5),
             experimental_activeTools: [],
