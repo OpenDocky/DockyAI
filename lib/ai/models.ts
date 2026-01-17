@@ -9,18 +9,37 @@ export type ChatModel = {
 };
 
 export const chatModels: ChatModel[] = [
-  // Meta Llama
+  // Meta Llama 3.1 & 3.2
   {
     id: "meta-llama/Llama-3.1-8B-Instruct",
     name: "Llama 3.1 8B",
     provider: "meta",
-    description: "Fast and efficient Llama model for daily tasks",
+    description: "Standard Meta Llama 3.1 8B Instruct",
   },
   {
     id: "meta-llama/Llama-3.1-70B-Instruct",
     name: "Llama 3.1 70B",
     provider: "meta",
-    description: "Highly capable for complex reasoning and tasks",
+    description: "Meta Llama 3.1 70B for high-end reasoning",
+  },
+  {
+    id: "meta-llama/Llama-3.2-1B-Instruct",
+    name: "Llama 3.2 1B",
+    provider: "meta",
+    description: "Ultra-fast Llama 3.2 model",
+  },
+  {
+    id: "meta-llama/Llama-3.2-3B-Instruct",
+    name: "Llama 3.2 3B",
+    provider: "meta",
+    description: "Efficient Llama 3.2 model",
+  },
+  // Specialized Llama-based
+  {
+    id: "nvidia/Llama-3.1-Nemotron-70B-Instruct-HF",
+    name: "Nemotron 70B",
+    provider: "nvidia",
+    description: "NVIDIA's Llama-based model, excellent for chat",
   },
   {
     id: "NousResearch/Hermes-3-Llama-3.1-8B",
@@ -28,24 +47,49 @@ export const chatModels: ChatModel[] = [
     provider: "meta",
     description: "Llama 3.1 fine-tuned for better instruction following",
   },
-  // Qwen (Alibaba)
+  {
+    id: "NousResearch/Hermes-3-Llama-3.1-70B",
+    name: "Hermes 3 (Llama 70B)",
+    provider: "meta",
+    description: "Powerful Hermes 3 version for complex logic",
+  },
+  // Qwen 2.5
   {
     id: "Qwen/Qwen2.5-7B-Instruct",
     name: "Qwen 2.5 7B",
     provider: "alibaba",
-    description: "Alibaba's latest efficient 7B model",
+    description: "Small and fast Qwen 2.5",
+  },
+  {
+    id: "Qwen/Qwen2.5-14B-Instruct",
+    name: "Qwen 2.5 14B",
+    provider: "alibaba",
+    description: "Mid-size Qwen 2.5 Instruct",
   },
   {
     id: "Qwen/Qwen2.5-32B-Instruct",
     name: "Qwen 2.5 32B",
     provider: "alibaba",
-    description: "Perfect balance between speed and performance",
+    description: "Highly capable balanced Qwen 2.5",
   },
   {
     id: "Qwen/Qwen2.5-72B-Instruct",
     name: "Qwen 2.5 72B",
     provider: "alibaba",
-    description: "Most powerful Qwen model for expert results",
+    description: "The most powerful Qwen 2.5",
+  },
+  // Specialized Qwen-based
+  {
+    id: "Qwen/Qwen2.5-Coder-7B-Instruct",
+    name: "Qwen Coder 7B",
+    provider: "alibaba",
+    description: "Specially tuned for coding tasks",
+  },
+  {
+    id: "Qwen/Qwen2.5-Coder-32B-Instruct",
+    name: "Qwen Coder 32B",
+    provider: "alibaba",
+    description: "Expert level coding assistant model",
   },
 ];
 
