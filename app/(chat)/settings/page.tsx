@@ -1,32 +1,52 @@
-import { auth } from "@/app/(auth)/auth";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { getUserSettings, updateUserSettings } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default async function SettingsPage() {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/");
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "Saving..." : "Save Settings"}
+    </Button>
+  );
+}
+
+export default function SettingsPage() {
+  const [settings, setSettings] = useState({ customInstructions: "", useLocation: true });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    getUserSettings()
+      .then((data) => {
+        setSettings(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="container max-w-2xl py-10 space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
-  let settings;
-  let hasError = false;
-
-  try {
-    settings = await getUserSettings();
-  } catch (error) {
-    console.error("Failed to load settings:", error);
-    hasError = true;
-    settings = {
-      customInstructions: "",
-      useLocation: true,
-    };
-  }
-
-  if (hasError) {
+  if (error) {
     return (
       <div className="container max-w-2xl py-10 space-y-8">
         <div>
@@ -118,7 +138,7 @@ export default async function SettingsPage() {
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit">Save Settings</Button>
+          <SubmitButton />
         </div>
       </form>
     </div>

@@ -10,15 +10,23 @@ export async function updateUserSettings(formData: FormData) {
     throw new Error("Unauthorized");
   }
 
-  const customInstructions = formData.get("customInstructions") as string;
-  const useLocation = formData.get("useLocation") === "on";
+  try {
+    const customInstructions = formData.get("customInstructions") as string;
+    const useLocation = formData.get("useLocation") === "on";
 
-  await updateUserById(session.user.id, {
-    customInstructions,
-    useLocation,
-  });
+    await updateUserById(session.user.id, {
+      customInstructions,
+      useLocation,
+    });
 
-  revalidatePath("/settings");
+    revalidatePath("/settings");
+    
+    // Return success - Next.js will handle the redirect
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update settings:", error);
+    return { success: false, error: "Failed to save settings" };
+  }
 }
 
 export async function getUserSettings() {
