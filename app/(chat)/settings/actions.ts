@@ -25,9 +25,27 @@ export async function getUserSettings() {
     return null;
   }
 
-  const [user] = await getUserById(session.user.id);
-  return {
-    customInstructions: user?.customInstructions || "",
-    useLocation: user?.useLocation ?? true,
-  };
+  try {
+    // Retry once if DB is slow during migration
+    let users = await getUserById(session.user.id);
+    
+    if (users.length === 0) {
+      console.warn(`User ${session.user.id} not found in DB, retrying once...`);
+      await new Promise(r => setTimeout(r, 2000));
+      users = await getUserById(session.user.id);
+    }
+
+    const user = users[0];
+    return {
+      customInstructions: user?.customInstructions || "",
+      useLocation: user?.useLocation ?? true,
+    };
+  } catch (error) {
+    console.error("Failed to fetch settings from DB:", error);
+    // Return default settings instead of crashing
+    return {
+      customInstructions: "",
+      useLocation: true,
+    };
+  }
 }
