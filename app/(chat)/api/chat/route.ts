@@ -148,37 +148,25 @@ export async function POST(request: Request) {
       execute: async ({ writer: dataStream }) => {
         console.log("Starting stream with model:", selectedChatModel);
         try {
-          const result = streamText({
+          const result = await streamText({
             model: getLanguageModel(selectedChatModel),
             system: systemPrompt({ selectedChatModel, requestHints }),
             messages: modelMessages,
-          stopWhen: stepCountIs(5),
-          experimental_activeTools: isReasoningModel
-            ? []
-            : [
-                "getWeather",
-                "createDocument",
-                "updateDocument",
-                "requestSuggestions",
-              ],
-          providerOptions: isReasoningModel
-            ? {
-                anthropic: {
-                  thinking: { type: "enabled", budgetTokens: 10_000 },
-                },
-              }
-            : undefined,
-          tools: {
-            getWeather,
-            createDocument: createDocument({ session, dataStream }),
-            updateDocument: updateDocument({ session, dataStream }),
-            requestSuggestions: requestSuggestions({ session, dataStream }),
-          },
-          experimental_telemetry: {
-            isEnabled: isProductionEnvironment,
-            functionId: "stream-text",
-          },
-        });
+            stopWhen: stepCountIs(5),
+            experimental_activeTools: [],
+            providerOptions: isReasoningModel
+              ? {
+                  anthropic: {
+                    thinking: { type: "enabled", budgetTokens: 10_000 },
+                  },
+                }
+              : undefined,
+            tools: {},
+            experimental_telemetry: {
+              isEnabled: isProductionEnvironment,
+              functionId: "stream-text",
+            },
+          });
 
         dataStream.merge(result.toUIMessageStream({ sendReasoning: true }));
 
