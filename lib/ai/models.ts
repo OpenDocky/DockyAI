@@ -34,25 +34,6 @@ export const chatModels: ChatModel[] = [
     provider: "meta",
     description: "Efficient Llama 3.2 model",
   },
-  // Specialized Llama-based
-  {
-    id: "nvidia/Llama-3.1-Nemotron-70B-Instruct-HF",
-    name: "Nemotron 70B",
-    provider: "nvidia",
-    description: "NVIDIA's Llama-based model, excellent for chat",
-  },
-  {
-    id: "NousResearch/Hermes-3-Llama-3.1-8B",
-    name: "Hermes 3 (Llama 8B)",
-    provider: "meta",
-    description: "Llama 3.1 fine-tuned for better instruction following",
-  },
-  {
-    id: "NousResearch/Hermes-3-Llama-3.1-70B",
-    name: "Hermes 3 (Llama 70B)",
-    provider: "meta",
-    description: "Powerful Hermes 3 version for complex logic",
-  },
   // Qwen 2.5
   {
     id: "Qwen/Qwen2.5-7B-Instruct",
