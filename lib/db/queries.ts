@@ -126,17 +126,19 @@ export async function createUser(email: string, password: string) {
 }
 
 export async function createGuestUser() {
+  const id = generateUUID(); // Generate ID for guest user
   const email = `guest-${Date.now()}`;
-  const password = generateHashedPassword(generateUUID());
+  const password = generateHashedPassword(id); // Use the ID to generate password
 
   try {
     const db = getDb();
     console.log("Creating guest user with email:", email);
-    return await db.insert(user).values({ 
-      email, 
-      password, 
+    return await db.insert(user).values({
+      id, // Include the generated ID
+      email,
+      password,
       useLocation: true,
-      customInstructions: "" 
+      customInstructions: ""
     }).returning({
       id: user.id,
       email: user.email,
