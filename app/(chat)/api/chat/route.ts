@@ -242,7 +242,7 @@ export async function POST(request: Request) {
           });
 
           // AI Moderation for AI-generated messages
-          const aiResponse = await result.text(); // Get full AI response text
+          const aiResponse = await result.text; // Get full AI response text
           const isAIResponseUnsafe = await checkMessageWithAI(aiResponse);
 
           if (isAIResponseUnsafe) {
