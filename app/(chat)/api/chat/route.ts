@@ -182,6 +182,7 @@ export async function POST(request: Request) {
             parts: message.parts,
             attachments: [],
             createdAt: new Date(),
+            moderation: false,
           },
         ],
       });
@@ -281,15 +282,14 @@ export async function POST(request: Request) {
               await saveMessages({
                 messages: [
                   {
-                    id: finishedMsg.id,
-                    role: finishedMsg.role,
-                    parts: finishedMsg.parts,
-                    createdAt: new Date(),
-                    attachments: [],
-                    chatId: id,
-                    experimental_metadata: finishedMsg.experimental_metadata, // Preserve metadata including moderation
-                  },
-                ],
+                                      id: finishedMsg.id,
+                                      role: finishedMsg.role,
+                                      parts: finishedMsg.parts,
+                                      createdAt: new Date(),
+                                      attachments: [],
+                                      chatId: id,
+                                      moderation: finishedMsg.experimental_metadata?.moderation || false, // Set moderation flag
+                                    },                ],
               });
             }
           }
@@ -303,7 +303,7 @@ export async function POST(request: Request) {
               createdAt: new Date(),
               attachments: [],
               chatId: id,
-              experimental_metadata: currentMessage.experimental_metadata, // Preserve metadata including moderation
+              moderation: currentMessage.experimental_metadata?.moderation || false,
             })),
           });
         }
