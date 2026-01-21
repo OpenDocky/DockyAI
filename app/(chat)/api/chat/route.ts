@@ -163,7 +163,7 @@ export async function POST(request: Request) {
       // Extract text content from the user message parts
       const userMessageText = message.parts
         .filter((part) => part.type === "text" && part.text)
-        .map((part) => part.text)
+        .map((part) => (part as { text: string }).text) // Type assertion added here
         .join(" ");
 
       // Perform AI moderation check
