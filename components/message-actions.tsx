@@ -180,7 +180,7 @@ export function PureMessageActions({
       </Action>
       <Action
         data-testid="message-moderate"
-        disabled={message.experimental_metadata?.moderation || isModerating}
+        disabled={(message as ChatMessage).experimental_metadata?.moderation || isModerating}
         onClick={() => {
           startTransition(async () => {
             await moderateMessage({

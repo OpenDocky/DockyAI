@@ -45,11 +45,11 @@ export type CustomUIDataTypes = {
   "chat-title": string;
 };
 
-export type ChatMessage = UIMessage<
-  MessageMetadata,
-  CustomUIDataTypes,
-  ChatTools
->;
+export type ChatMessage = UIMessage<MessageMetadata, CustomUIDataTypes, ChatTools> & {
+
+  experimental_metadata?: MessageMetadata;
+
+};
 
 export type Attachment = {
   name: string;
