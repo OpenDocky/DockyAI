@@ -9,32 +9,6 @@ export type ChatModel = {
 };
 
 export const chatModels: ChatModel[] = [
-  // Meta Llama 3.1 & 3.2
-  {
-    id: "meta-llama/Llama-3.1-8B-Instruct",
-    name: "Llama 3.1 8B",
-    provider: "meta",
-    description: "Standard Meta Llama 3.1 8B Instruct",
-  },
-  {
-    id: "meta-llama/Llama-3.1-70B-Instruct",
-    name: "Llama 3.1 70B",
-    provider: "meta",
-    description: "Meta Llama 3.1 70B for high-end reasoning",
-  },
-  {
-    id: "meta-llama/Llama-3.2-1B-Instruct",
-    name: "Llama 3.2 1B",
-    provider: "meta",
-    description: "Ultra-fast Llama 3.2 model",
-  },
-  {
-    id: "meta-llama/Llama-3.2-3B-Instruct",
-    name: "Llama 3.2 3B",
-    provider: "meta",
-    description: "Efficient Llama 3.2 model",
-  },
-  // Qwen 2.5
   {
     id: "Qwen/Qwen2.5-7B-Instruct",
     name: "Qwen 2.5 7B",
@@ -42,35 +16,28 @@ export const chatModels: ChatModel[] = [
     description: "Small and fast Qwen 2.5",
   },
   {
-    id: "Qwen/Qwen2.5-14B-Instruct",
-    name: "Qwen 2.5 14B",
-    provider: "alibaba",
-    description: "Mid-size Qwen 2.5 Instruct",
-  },
-  {
-    id: "Qwen/Qwen2.5-32B-Instruct",
-    name: "Qwen 2.5 32B",
-    provider: "alibaba",
-    description: "Highly capable balanced Qwen 2.5",
-  },
-  {
     id: "Qwen/Qwen2.5-72B-Instruct",
     name: "Qwen 2.5 72B",
     provider: "alibaba",
     description: "The most powerful Qwen 2.5",
   },
-  // Specialized Qwen-based
   {
-    id: "Qwen/Qwen2.5-Coder-7B-Instruct",
-    name: "Qwen Coder 7B",
-    provider: "alibaba",
-    description: "Specially tuned for coding tasks",
+    id: "zai-org/GLM-4.7-Flash:novita",
+    name: "GLM-4.7-Flash",
+    provider: "zai",
+    description: "A powerful multilingual model",
   },
   {
-    id: "Qwen/Qwen2.5-Coder-32B-Instruct",
-    name: "Qwen Coder 32B",
+    id: "zai-org/GLM-4.7:novita",
+    name: "GLM-4.7-Novita",
+    provider: "zai",
+    description: "Enhanced version of GLM-4.7",
+  },
+  {
+    id: "Qwen/Qwen3-Coder-30B-A3B-Instruct:fireworks-ai",
+    name: "Qwen 3 Coder 30B",
     provider: "alibaba",
-    description: "Expert level coding assistant model",
+    description: "Optimized for coding tasks",
   },
 ];
 
