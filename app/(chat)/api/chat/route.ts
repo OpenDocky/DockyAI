@@ -288,7 +288,7 @@ export async function POST(request: Request) {
                                       createdAt: new Date(),
                                       attachments: [],
                                       chatId: id,
-                                      moderation: finishedMsg.experimental_metadata?.moderation || false, // Set moderation flag
+                                      moderation: (finishedMsg as ChatMessage).experimental_metadata?.moderation || false, // Set moderation flag
                                     },                ],
               });
             }
@@ -303,7 +303,7 @@ export async function POST(request: Request) {
               createdAt: new Date(),
               attachments: [],
               chatId: id,
-              moderation: currentMessage.experimental_metadata?.moderation || false,
+              moderation: (currentMessage as ChatMessage).experimental_metadata?.moderation || false,
             })),
           });
         }
