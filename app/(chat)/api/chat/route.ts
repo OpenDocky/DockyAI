@@ -1,3 +1,4 @@
+import { cookies } from "next/headers"; // Import cookies
 import { geolocation } from "@vercel/functions";
 import {
   convertToModelMessages,
@@ -10,7 +11,7 @@ import {
 import { after } from "next/server";
 import { createResumableStreamContext } from "resumable-stream";
 import { auth } from "@clerk/nextjs/server";
-import { entitlementsByUserType } from "@/lib/ai/entitlements";
+import { entitlementsByUserType, UserType } from "@/lib/ai/entitlements"; // Import UserType
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { getLanguageModel } from "@/lib/ai/providers";
 import { createDocument } from "@/lib/ai/tools/create-document";
@@ -30,15 +31,19 @@ import {
   saveMessages,
   updateChatTitleById,
   updateMessage,
+  createGuestUser, // Import createGuestUser
 } from "@/lib/db/queries";
 import type { DBMessage } from "@/lib/db/schema";
 import { ChatSDKError } from "@/lib/errors";
 import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
+import { checkMessageWithAI } from "@/lib/ai/moderation-ai"; // Import the AI moderation utility
 import { type PostRequestBody, postRequestBodySchema } from "./schema";
 
 export const maxDuration = 60;
+
+const GUEST_ID_COOKIE_NAME = "guest_user_id"; // Define guest cookie name
 
 function getStreamContext() {
   try {
@@ -64,20 +69,41 @@ export async function POST(request: Request) {
     const { id, message, messages, selectedChatModel, selectedVisibilityType } =
       requestBody;
 
-    const { userId } = await auth();
+    const { userId: clerkUserId } = await auth(); // Rename to avoid conflict
 
-    if (!userId) {
-      return new ChatSDKError("unauthorized:chat").toResponse();
+    let currentUserId: string;
+    let userType: UserType;
+    const cookieStore = await cookies(); // Await the cookies() function
+
+    if (clerkUserId) {
+      currentUserId = clerkUserId;
+      userType = "regular";
+    } else {
+      let guestId = cookieStore.get(GUEST_ID_COOKIE_NAME)?.value;
+
+      if (!guestId) {
+        // Create new guest user
+        const newGuest = await createGuestUser(); // Use the existing createGuestUser
+        guestId = newGuest[0].id; // Assuming createGuestUser returns an array with the new user object
+        cookieStore.set(GUEST_ID_COOKIE_NAME, guestId, {
+          httpOnly: true,
+          secure: isProductionEnvironment,
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          path: "/",
+          sameSite: "lax",
+        });
+      }
+      currentUserId = guestId;
+      userType = "guest";
     }
 
     // Ensure user exists in local DB before saving any related records (Chat, Message, etc.)
     try {
-      await getOrCreateUser(userId);
+      // getOrCreateUser can handle both existing Clerk users and new guest IDs
+      await getOrCreateUser(currentUserId); 
     } catch (dbError) {
       console.error("Failed to provision user in local DB:", dbError);
     }
-
-    const userType: "regular" = "regular";
 
     if (!process.env.HUGGING_FACE_API_KEY) {
       return new ChatSDKError(
@@ -87,7 +113,7 @@ export async function POST(request: Request) {
     }
 
     const messageCount = await getMessageCountByUserId({
-      id: userId,
+      id: currentUserId,
       differenceInHours: 24,
     });
 
@@ -102,7 +128,7 @@ export async function POST(request: Request) {
     let titlePromise: Promise<string> | null = null;
 
     if (chat) {
-      if (chat.userId !== userId) {
+      if (chat.userId !== currentUserId) { // Use currentUserId
         return new ChatSDKError("forbidden:chat").toResponse();
       }
       if (!isToolApprovalFlow) {
@@ -111,7 +137,7 @@ export async function POST(request: Request) {
     } else if (message?.role === "user") {
       await saveChat({
         id,
-        userId: userId,
+        userId: currentUserId, // Use currentUserId
         title: "New chat",
         visibility: selectedVisibilityType,
       });
@@ -132,6 +158,19 @@ export async function POST(request: Request) {
     };
 
     if (message?.role === "user") {
+      // Extract text content from the user message parts
+      const userMessageText = message.parts
+        .filter((part) => part.type === "text" && part.text)
+        .map((part) => part.text)
+        .join(" ");
+
+      // Perform AI moderation check
+      const isUnsafe = await checkMessageWithAI(userMessageText);
+      if (isUnsafe) {
+        console.warn(`AI moderation detected unsafe content in user message: "${userMessageText}"`);
+        throw new ChatSDKError("forbidden:content");
+      }
+
       await saveMessages({
         messages: [
           {
@@ -158,7 +197,7 @@ export async function POST(request: Request) {
         console.log("Starting stream with model:", selectedChatModel);
         let userData = null;
         try {
-          userData = await getOrCreateUser(userId);
+          userData = await getOrCreateUser(currentUserId); // Use currentUserId
         } catch (dbError) {
           console.error("Failed to fetch or create user, using defaults:", dbError);
         }
@@ -189,9 +228,9 @@ export async function POST(request: Request) {
               : undefined,
             tools: {
               getWeather,
-              createDocument: createDocument({ userId, dataStream }),
-              updateDocument: updateDocument({ userId, dataStream }),
-              requestSuggestions: requestSuggestions({ userId, dataStream }),
+              createDocument: createDocument({ userId: currentUserId, dataStream }), // Use currentUserId
+              updateDocument: updateDocument({ userId: currentUserId, dataStream }), // Use currentUserId
+              requestSuggestions: requestSuggestions({ userId: currentUserId, dataStream }), // Use currentUserId
             },
             experimental_telemetry: {
               isEnabled: isProductionEnvironment,
@@ -199,7 +238,21 @@ export async function POST(request: Request) {
             },
           });
 
-          dataStream.merge(result.toUIMessageStream({ sendReasoning: true }));
+          // AI Moderation for AI-generated messages
+          const aiResponse = await result.text(); // Get full AI response text
+          const isAIResponseUnsafe = await checkMessageWithAI(aiResponse);
+
+          if (isAIResponseUnsafe) {
+            console.warn(`AI moderation detected unsafe content in AI response: "${aiResponse}"`);
+            dataStream.write({
+              type: "text",
+              text: "Message modéré : le contenu a été jugé inapproprié.",
+            });
+            dataStream.write({ type: "metadata", data: { moderation: true } });
+            // The AI message will be saved with the moderation flag in onFinish below
+          } else {
+            dataStream.merge(result.toUIMessageStream({ sendReasoning: true }));
+          }
 
           if (titlePromise) {
             const title = await titlePromise;
@@ -213,6 +266,7 @@ export async function POST(request: Request) {
       },
       generateId: generateUUID,
       onFinish: async ({ messages: finishedMessages }) => {
+        // AI response moderation happens inside execute, so finishedMessages will already be moderated if needed.
         if (isToolApprovalFlow) {
           for (const finishedMsg of finishedMessages) {
             const existingMsg = uiMessages.find((m) => m.id === finishedMsg.id);
@@ -231,12 +285,14 @@ export async function POST(request: Request) {
                     createdAt: new Date(),
                     attachments: [],
                     chatId: id,
+                    experimental_metadata: finishedMsg.experimental_metadata, // Preserve metadata including moderation
                   },
                 ],
               });
             }
           }
         } else if (finishedMessages.length > 0) {
+          // For AI generated messages, if they were moderated, their parts and metadata would be updated in 'execute'
           await saveMessages({
             messages: finishedMessages.map((currentMessage) => ({
               id: currentMessage.id,
@@ -245,6 +301,7 @@ export async function POST(request: Request) {
               createdAt: new Date(),
               attachments: [],
               chatId: id,
+              experimental_metadata: currentMessage.experimental_metadata, // Preserve metadata including moderation
             })),
           });
         }
@@ -302,8 +359,9 @@ export async function DELETE(request: Request) {
     return new ChatSDKError("bad_request:api").toResponse();
   }
 
-  const { userId } = await auth();
+  const { userId } = await auth(); // This is Clerk's userId
 
+  // Guest users cannot delete chats. Only logged-in users.
   if (!userId) {
     return new ChatSDKError("unauthorized:chat").toResponse();
   }

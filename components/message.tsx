@@ -16,7 +16,7 @@ import {
   ToolInput,
   ToolOutput,
 } from "./elements/tool";
-import { SparklesIcon } from "./icons";
+import { SparklesIcon, WarningIcon } from "./icons";
 import { MessageActions } from "./message-actions";
 import { MessageEditor } from "./message-editor";
 import { MessageReasoning } from "./message-reasoning";
@@ -52,9 +52,13 @@ const PurePreviewMessage = ({
 
   useDataStream();
 
+  const isModerated = message.experimental_metadata?.moderation;
+
   return (
     <div
-      className="group/message fade-in w-full animate-in duration-200"
+      className={cn("group/message fade-in w-full animate-in duration-200", {
+        "opacity-50": isModerated,
+      })}
       data-role={message.role}
       data-testid={`message-${message.role}`}
     >
@@ -86,6 +90,13 @@ const PurePreviewMessage = ({
               message.role === "user" && mode !== "edit",
           })}
         >
+          {isModerated && (
+            <div className="flex items-center gap-1 text-muted-foreground text-sm">
+              <WarningIcon size={14} />
+              <span>Message signalé</span>
+            </div>
+          )}
+
           {attachmentsFromMessage.length > 0 && (
             <div
               className="flex flex-row justify-end gap-2"

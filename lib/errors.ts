@@ -16,7 +16,8 @@ export type Surface =
   | "vote"
   | "document"
   | "suggestions"
-  | "activate_gateway";
+  | "activate_gateway"
+  | "content";
 
 export type ErrorCode = `${ErrorType}:${Surface}`;
 
@@ -33,6 +34,7 @@ export const visibilityBySurface: Record<Surface, ErrorVisibility> = {
   document: "response",
   suggestions: "response",
   activate_gateway: "response",
+  content: "response",
 };
 
 export class ChatSDKError extends Error {
@@ -91,6 +93,8 @@ export function getMessageByErrorCode(errorCode: ErrorCode): string {
       return "You need to sign in before continuing.";
     case "forbidden:auth":
       return "Your account does not have access to this feature.";
+    case "forbidden:content":
+      return "Your message contains forbidden content. Please revise it and try again.";
 
     case "rate_limit:chat":
       return "You have exceeded your maximum number of messages for the day. Please try again later.";

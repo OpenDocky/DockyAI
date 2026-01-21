@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isPublicRoute = createRouteMatcher(["/login(.*)", "/register(.*)", "/api/auth(.*)"]);
+const isPublicRoute = createRouteMatcher(["/", "/api/chat(.*)", "/api/vote(.*)", "/login(.*)", "/register(.*)", "/api/auth(.*)"]);
 
 export const proxy = clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {

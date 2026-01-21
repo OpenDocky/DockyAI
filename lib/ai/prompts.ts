@@ -133,3 +133,14 @@ Bad outputs (never do this):
 - "# Space Essay" (no hashtags)
 - "Title: Weather" (no prefixes)
 - ""NYC Weather"" (no quotes)`;
+
+export const moderationPrompt = ({ message }: { message: string }) => `
+You are a highly skilled content moderation AI. Your task is to analyze the following message and determine if it contains any harmful, offensive, illegal, or inappropriate content, including but not limited to hate speech, harassment, violence, sexual content, or discrimination.
+
+Respond ONLY with "SAFE" if the message is appropriate, or "UNSAFE" if it contains forbidden content. Do NOT add any other text, explanation, or punctuation.
+
+Message to moderate:
+"""
+${message}
+"""
+`;

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { generateText, type UIMessage } from "ai";
 import { cookies } from "next/headers";
 import type { VisibilityType } from "@/components/visibility-selector";
@@ -9,6 +10,7 @@ import {
   deleteMessagesByChatIdAfterTimestamp,
   getMessageById,
   updateChatVisibilityById,
+  updateMessageModerationById,
 } from "@/lib/db/queries";
 import { getTextFromMessage } from "@/lib/utils";
 
@@ -50,4 +52,19 @@ export async function updateChatVisibility({
   visibility: VisibilityType;
 }) {
   await updateChatVisibilityById({ chatId, visibility });
+}
+
+export async function moderateMessage({
+  messageId,
+  chatId,
+}: {
+  messageId: string;
+  chatId: string;
+}) {
+  try {
+    await updateMessageModerationById({ id: messageId });
+    revalidatePath(`/chat/${chatId}`);
+  } catch (error) {
+    console.error("Failed to moderate message:", error);
+  }
 }

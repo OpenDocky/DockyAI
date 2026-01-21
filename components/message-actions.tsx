@@ -1,12 +1,19 @@
 import equal from "fast-deep-equal";
-import { memo } from "react";
+import { memo, useTransition } from "react";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 import { useCopyToClipboard } from "usehooks-ts";
+import { moderateMessage } from "@/app/(chat)/actions";
 import type { Vote } from "@/lib/db/schema";
 import type { ChatMessage } from "@/lib/types";
 import { Action, Actions } from "./elements/actions";
-import { CopyIcon, PencilEditIcon, ThumbDownIcon, ThumbUpIcon } from "./icons";
+import {
+  CopyIcon,
+  PencilEditIcon,
+  ThumbDownIcon,
+  ThumbUpIcon,
+  WarningIcon,
+} from "./icons";
 
 export function PureMessageActions({
   chatId,
@@ -23,6 +30,7 @@ export function PureMessageActions({
 }) {
   const { mutate } = useSWRConfig();
   const [_, copyToClipboard] = useCopyToClipboard();
+  const [isModerating, startTransition] = useTransition();
 
   if (isLoading) {
     return null;
@@ -169,6 +177,22 @@ export function PureMessageActions({
         tooltip="Downvote Response"
       >
         <ThumbDownIcon />
+      </Action>
+      <Action
+        data-testid="message-moderate"
+        disabled={message.experimental_metadata?.moderation || isModerating}
+        onClick={() => {
+          startTransition(async () => {
+            await moderateMessage({
+              messageId: message.id,
+              chatId,
+            });
+            toast.success("Message signalé");
+          });
+        }}
+        tooltip="Signaler ce message"
+      >
+        <WarningIcon />
       </Action>
     </Actions>
   );

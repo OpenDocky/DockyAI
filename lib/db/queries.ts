@@ -548,6 +548,21 @@ export async function getMessageById({ id }: { id: string }) {
   }
 }
 
+export async function updateMessageModerationById({ id }: { id:string }) {
+  try {
+    const db = getDb();
+    return await db
+      .update(message)
+      .set({ moderation: true })
+      .where(eq(message.id, id));
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to update message moderation by id"
+    );
+  }
+}
+
 export async function deleteMessagesByChatIdAfterTimestamp({
   chatId,
   timestamp,
