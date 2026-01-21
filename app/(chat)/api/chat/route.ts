@@ -249,7 +249,7 @@ export async function POST(request: Request) {
             console.warn(`AI moderation detected unsafe content in AI response: "${aiResponse}"`);
             dataStream.write({
               type: "data-textDelta", // Corrected type for streaming text
-              text: "Message modéré : le contenu a été jugé inapproprié.",
+              data: "Message modéré : le contenu a été jugé inapproprié.", // Content should be under 'data'
             });
             dataStream.write({ type: "metadata", data: { moderation: true } });
             // The AI message will be saved with the moderation flag in onFinish below
