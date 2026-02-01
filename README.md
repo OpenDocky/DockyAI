@@ -91,7 +91,7 @@ Ce projet est open-source.
 
 Développé par **Drayko**
 
-Pour (OpenDocky)[https://github.com/OpenDocky]
+Pour [OpenDocky](https://github.com/OpenDocky)
 
 Projet passion autour de l’IA et du web.
 
