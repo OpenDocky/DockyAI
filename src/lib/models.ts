@@ -76,18 +76,4 @@ export const MODELS: AIModel[] = [
         tier: 'free',
         description: 'Alibaba next-gen open model.',
     },
-    {
-        id: 'gemini-2.0-flash',
-        name: 'Gemini 2.0 Flash',
-        provider: 'google',
-        tier: 'free',
-        description: 'Google next-gen high-speed model.',
-    },
-    {
-        id: 'gemma2-9b-it',
-        name: 'Gemma 2',
-        provider: 'groq',
-        tier: 'free',
-        description: 'Google lightweight open model.',
-    },
 ];

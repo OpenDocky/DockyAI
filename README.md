@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 DockyAI
 
-## Getting Started
+**DockyAI** est un **hub d’intelligences artificielles gratuit à vie**, accessible depuis le web, qui permet de discuter avec plusieurs modèles IA depuis **une seule interface simple et moderne**.
 
-First, run the development server:
+👉 Aucun abonnement requis.  
+👉 Aucun compte premium caché.  
+👉 Juste de l’IA, gratuitement.
+
+---
+
+## ✨ Fonctionnalités
+
+- 💬 **Interface de chat moderne** (inspirée des meilleurs outils IA)
+- 🧠 **Plusieurs modèles IA disponibles**, au même endroit
+- 🔁 **Changement de modèle à la volée** dans une conversation
+- 🌍 **Support multilingue** (FR / EN)
+- 🗂️ **Historique des conversations**
+- ⚡ Rapide, fluide et léger
+- 🔓 **100% gratuit, à vie**
+
+---
+
+## 🧠 Modèles disponibles
+
+DockyAI intègre plusieurs modèles open & accessibles, par exemple :
+
+- **Qwen 2.5 (7B / 72B)**
+- **Qwen 3 Coder**
+- **GLM-4.7**
+- **GLM-4.7 Flash**
+- *(et d’autres à venir 👀)*
+
+> Les modèles peuvent évoluer au fil du temps.
+
+---
+
+## 🖥️ Aperçu
+
+DockyAI propose :
+- Une page d’accueil simple avec suggestions
+- Un chat fluide type ChatGPT
+- Un sélecteur de modèles intégré directement dans l’UI
+
+---
+
+## 🚀 Objectif du projet
+
+DockyAI a pour but de :
+
+- Centraliser plusieurs IA dans **un seul outil**
+- Rendre l’IA **accessible à tous**
+- Offrir une alternative **simple, gratuite et sans barrière**
+- Expérimenter et apprendre autour des LLM et des interfaces IA
+
+---
+
+## 🔧 Stack
+
+- Frontend moderne (React / Next.js)
+- API IA (multi-providers)
+- Hébergement cloud
+- Sécurité & proxy via Cloudflare
+
+---
+
+## 🛠️ Installation
 
 ```bash
+git clone https://github.com/GraphStats/dockyai-test.git
+cd dockyai-test
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📌 Statut du projet
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🚧 **En développement actif**
+Des fonctionnalités et des modèles seront ajoutés progressivement.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Licence
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ce projet est open-source.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ❤️ Crédits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Développé par [Drayko](https://drayko.xyz), pour [OpenDocky](https://github.com/OpenDocky)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Projet passion autour de l’IA et du web.
+
+---
+
+## ⭐ Soutenir le projet
+
+Si DockyAI te plaît :
+
+* ⭐ Star le repo
+* 🐛 Ouvre une issue
+* 💡 Propose des idées
+
+---
+
+> *DockyAI — Un hub IA. Gratuit. Pour tout le monde.*

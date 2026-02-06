@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Check if it's a Groq model
-        const validKeywords = ['llama', 'deepseek', 'qwen', 'gemma', 'mixtral', 'kimi', 'gpt'];
+        const validKeywords = ['llama', 'deepseek', 'qwen', 'gemma', 'mixtral', 'mistral', 'kimi', 'gpt'];
         const isGroqModel = validKeywords.some(kw => modelId.toLowerCase().includes(kw));
 
         if (!isGroqModel) {
