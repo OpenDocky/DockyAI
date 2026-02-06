@@ -138,8 +138,8 @@ export default function ChatWindow({
         if (savedCredits) setCredits(parseInt(savedCredits));
     }, [isLoading]);
 
-
     const scrollToBottom = () => {
+
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
