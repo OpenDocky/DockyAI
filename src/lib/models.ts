@@ -83,48 +83,6 @@ export const MODELS: AIModel[] = [
         tier: 'free',
         description: 'Alibaba next-gen open model.',
     },
-    // Hugging Face
-    {
-        id: 'mistralai/Mistral-7B-Instruct-v0.3',
-        name: 'Mistral 7B',
-        brand: 'Mistral',
-        provider: 'huggingface',
-        tier: 'free',
-        description: 'Mistral AI lightweight high-perf model.',
-    },
-    {
-        id: 'google/gemma-2-9b-it',
-        name: 'Gemma 2 9B',
-        brand: 'Google',
-        provider: 'huggingface',
-        tier: 'free',
-        description: 'Google next-gen lightweight model.',
-    },
-    // OpenRouter
-    {
-        id: 'google/gemini-2.0-flash-exp:free',
-        name: 'Gemini 2.0 Flash',
-        brand: 'Google',
-        provider: 'openrouter',
-        tier: 'free',
-        description: 'OpenRouter free tier Gemini.',
-    },
-    {
-        id: 'deepseek/deepseek-r1:free',
-        name: 'DeepSeek R1',
-        brand: 'DeepSeek',
-        provider: 'openrouter',
-        tier: 'free',
-        description: 'OpenRouter free tier DeepSeek.',
-    },
-    {
-        id: 'openai/gpt-4o-mini',
-        name: 'GPT-4o Mini',
-        brand: 'OpenAI',
-        provider: 'openrouter',
-        tier: 'free',
-        description: 'Fast and efficient OpenAI model.',
-    },
 ];
 
 

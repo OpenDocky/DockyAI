@@ -120,6 +120,7 @@ export default function ChatWindow({
 }: ChatWindowProps) {
     const [input, setInput] = useState("");
     const [isModelSelectorOpen, setIsModelSelectorOpen] = useState(false);
+    const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
     const [credits, setCredits] = useState(100);
     const { user } = usePuter();
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -127,10 +128,16 @@ export default function ChatWindow({
 
     const currentModel = MODELS.find(m => m.id === currentModelId) || MODELS[0];
 
+    const brands = Array.from(new Set(MODELS.map(m => m.brand))).sort();
+    const filteredModels = selectedBrand
+        ? MODELS.filter(m => m.brand === selectedBrand)
+        : MODELS;
+
     useEffect(() => {
         const savedCredits = localStorage.getItem('docky_credits');
         if (savedCredits) setCredits(parseInt(savedCredits));
     }, [isLoading]);
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -283,12 +290,38 @@ export default function ChatWindow({
                             </button>
 
                             {isModelSelectorOpen && (
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-72 max-h-96 overflow-y-auto bg-[#0a0a0a] border border-white/10 rounded-2xl p-2 shadow-2xl animate-fade-in scrollbar-hide">
-                                    <div className="p-2 mb-1">
-                                        <span className="text-[9px] font-bold text-secondary uppercase tracking-[0.2em] opacity-40">Plateforme DockyAI</span>
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-80 max-h-[32rem] flex flex-col bg-[#0a0a0a] border border-white/10 rounded-2xl p-2 shadow-2xl animate-fade-in">
+                                    <div className="p-3 mb-1 flex flex-col gap-3">
+                                        <span className="text-[9px] font-bold text-secondary uppercase tracking-[0.2em] opacity-40">Filtrer par marque</span>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            <button
+                                                onClick={() => setSelectedBrand(null)}
+                                                className={clsx(
+                                                    "px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all",
+                                                    selectedBrand === null ? "bg-white text-black" : "bg-white/5 text-secondary hover:bg-white/10"
+                                                )}
+                                            >
+                                                Tous
+                                            </button>
+                                            {brands.map(brand => (
+                                                <button
+                                                    key={brand}
+                                                    onClick={() => setSelectedBrand(brand)}
+                                                    className={clsx(
+                                                        "px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all",
+                                                        selectedBrand === brand ? "bg-white text-black" : "bg-white/5 text-secondary hover:bg-white/10"
+                                                    )}
+                                                >
+                                                    {brand}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="space-y-1">
-                                        {MODELS.map(m => (
+                                    <div className="flex-1 overflow-y-auto scrollbar-hide space-y-1 p-1">
+                                        <div className="px-2 pb-1 border-b border-white/5 mb-1">
+                                            <span className="text-[9px] font-bold text-secondary uppercase tracking-[0.2em] opacity-40">Modèles disponibles</span>
+                                        </div>
+                                        {filteredModels.map(m => (
                                             <button
                                                 key={m.id}
                                                 onClick={() => {
@@ -303,7 +336,12 @@ export default function ChatWindow({
                                                 )}
                                             >
                                                 <div className="flex flex-col items-start min-w-0">
-                                                    <span className="text-xs font-bold truncate">{m.name}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs font-bold truncate">{m.name}</span>
+                                                        <span className="text-[8px] font-bold bg-white/5 px-1.5 py-0.5 rounded text-white/40 uppercase tracking-tighter">
+                                                            {m.brand}
+                                                        </span>
+                                                    </div>
                                                     <span className="text-[8px] uppercase tracking-widest opacity-40">{m.provider}</span>
                                                 </div>
                                                 {m.tier === 'premium' && <Cpu size={10} className="text-blue-500" />}
@@ -312,6 +350,7 @@ export default function ChatWindow({
                                     </div>
                                 </div>
                             )}
+
                         </div>
                     </div>
                 </div>
