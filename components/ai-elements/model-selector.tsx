@@ -181,6 +181,8 @@ export const ModelSelectorLogo = ({
         ? "/logos/qwen.svg"
       : provider === "mistral"
         ? "/logos/mistral.svg"
+      : provider === "xai"
+        ? "/logos/xai.svg"
       : provider === "llama"
         ? "/logos/llama.svg"
         : `https://models.dev/logos/${provider}.svg`

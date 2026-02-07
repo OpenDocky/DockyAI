@@ -76,6 +76,12 @@ export const chatModels: ChatModel[] = [
     provider: "Meta",
     description: "The Meta Llama 3 collection of multilingual large language models"
   },
+  {
+    id: "xai-org/grok-2",
+    name: "Grok 2",
+    provider: "xAI",
+    description: "This repository contains the weights of Grok 2, a model trained and used at xAI in 2024.",
+  },
 ];
 
 /**
