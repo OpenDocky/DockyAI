@@ -182,11 +182,9 @@ export async function POST(request: Request) {
                 try {
                   const res = await fetch(part.url);
                   const buf = Buffer.from(await res.arrayBuffer());
-                  const mediaType = (part as any).mediaType || "application/octet-stream";
-                  const dataUrl = `data:${mediaType};base64,${buf.toString("base64")}`;
                   return {
                     ...part,
-                    data: dataUrl,
+                    data: buf.toString("base64"),
                   };
                 } catch (err) {
                   console.error("Failed to inline file data:", err);
