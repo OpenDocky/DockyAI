@@ -11,19 +11,19 @@ export type ChatModel = {
 export const chatModels: ChatModel[] = [
   {
     id: "Qwen/Qwen2.5-7B-Instruct",
-    name: "Qwen 2.5 7B",
+    name: "Qwen 2.5",
     provider: "alibaba",
     description: "Small and fast Qwen 2.5",
   },
   {
     id: "Qwen/Qwen2.5-72B-Instruct",
-    name: "Qwen 2.5 72B",
+    name: "Qwen 2.5",
     provider: "alibaba",
     description: "The most powerful Qwen 2.5",
   },
     {
-    id: "Qwen/Qwen3-Coder-30B-A3B-Instruct:fireworks-ai",
-    name: "Qwen 3 Coder 30B",
+    id: "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    name: "Qwen 3 Coder",
     provider: "alibaba",
     description: "Optimized for coding tasks",
   },
