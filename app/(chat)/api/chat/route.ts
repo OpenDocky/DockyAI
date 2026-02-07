@@ -12,13 +12,18 @@ import { after } from "next/server";
 import { createResumableStreamContext } from "resumable-stream";
 import { auth } from "@clerk/nextjs/server";
 import { entitlementsByUserType, UserType } from "@/lib/ai/entitlements"; // Import UserType
-import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
+import {
+  artifactsPrompt,
+  type RequestHints,
+  systemPrompt,
+} from "@/lib/ai/prompts";
 import { getLanguageModel } from "@/lib/ai/providers";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { updateDocument } from "@/lib/ai/tools/update-document";
 import { isProductionEnvironment } from "@/lib/constants";
+import { DEFAULT_CHAT_MODEL, supportsTools } from "@/lib/ai/models";
 import {
   createStreamId,
   deleteChatById,
@@ -198,6 +203,12 @@ export async function POST(request: Request) {
       selectedChatModel.includes("reasoning") ||
       selectedChatModel.includes("thinking");
 
+    const selectedModelSupportsTools = supportsTools(selectedChatModel);
+    const effectiveModelId = selectedModelSupportsTools
+      ? selectedChatModel
+      : DEFAULT_CHAT_MODEL;
+    const effectiveModelSupportsTools = supportsTools(effectiveModelId);
+
     const modelMessages = await convertToModelMessages(uiMessages);
 
     const stream = createUIMessageStream({
@@ -213,21 +224,27 @@ export async function POST(request: Request) {
 
         try {
           const result = await streamText({
-            model: getLanguageModel(selectedChatModel),
-            system: systemPrompt({ 
-              selectedChatModel, 
-              requestHints,
-              customInstructions: userData?.customInstructions || undefined,
-              useLocation: userData?.useLocation ?? true,
-            }),
+            model: getLanguageModel(effectiveModelId),
+            system:
+              systemPrompt({
+                selectedChatModel: effectiveModelId,
+                requestHints,
+                customInstructions: userData?.customInstructions || undefined,
+                useLocation: userData?.useLocation ?? true,
+              }) +
+              (effectiveModelSupportsTools
+                ? `\n\n${artifactsPrompt}`
+                : "\n\nTools are disabled for this model; respond directly without tool calls."),
             messages: modelMessages,
             stopWhen: stepCountIs(5),
-            experimental_activeTools: [
-              "getWeather",
-              "createDocument",
-              "updateDocument",
-              "requestSuggestions",
-            ],
+            experimental_activeTools: effectiveModelSupportsTools
+              ? [
+                  "getWeather",
+                  "createDocument",
+                  "updateDocument",
+                  "requestSuggestions",
+                ]
+              : undefined,
             providerOptions: isReasoningModel
               ? {
                   anthropic: {
@@ -235,12 +252,26 @@ export async function POST(request: Request) {
                   },
                 }
               : undefined,
-            tools: {
-              getWeather,
-              createDocument: createDocument({ userId: currentUserId, dataStream }), // Use currentUserId
-              updateDocument: updateDocument({ userId: currentUserId, dataStream }), // Use currentUserId
-              requestSuggestions: requestSuggestions({ userId: currentUserId, dataStream }), // Use currentUserId
-            },
+            toolChoice: effectiveModelSupportsTools
+              ? { type: "auto" }
+              : { type: "none" },
+            tools: effectiveModelSupportsTools
+              ? {
+                  getWeather,
+                  createDocument: createDocument({
+                    userId: currentUserId,
+                    dataStream,
+                  }), // Use currentUserId
+                  updateDocument: updateDocument({
+                    userId: currentUserId,
+                    dataStream,
+                  }), // Use currentUserId
+                  requestSuggestions: requestSuggestions({
+                    userId: currentUserId,
+                    dataStream,
+                  }), // Use currentUserId
+                }
+              : undefined,
             experimental_telemetry: {
               isEnabled: isProductionEnvironment,
               functionId: "stream-text",
@@ -267,6 +298,14 @@ export async function POST(request: Request) {
             const title = await titlePromise;
             dataStream.write({ type: "data-chat-title", data: title });
             updateChatTitleById({ chatId: id, title });
+          }
+
+          if (!selectedModelSupportsTools && effectiveModelSupportsTools) {
+            dataStream.write({
+              type: "data-textDelta",
+              data: `ℹ️ Le modèle "${selectedChatModel}" ne prend pas en charge les tools. Bascule automatique vers "${effectiveModelId}" pour permettre les artifacts et tools.`,
+              transient: true,
+            });
           }
         } catch (err: any) {
           console.error("Error during stream execution:", err);

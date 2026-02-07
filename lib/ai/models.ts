@@ -41,6 +41,18 @@ export const chatModels: ChatModel[] = [
   },
 ];
 
+/**
+ * Some Hugging Face hosted models still do not reliably support tool-calling
+ */
+const toolSupportedModelIds = new Set<string>([
+  "meta-llama/Llama-3.1-8B-Instruct",
+  "meta-llama/Llama-3.1-70B-Instruct",
+  "meta-llama/Llama-3.3-70B-Instruct",
+]);
+
+export const supportsTools = (modelId: string) =>
+  toolSupportedModelIds.has(modelId);
+
 // Group models by provider for UI
 export const modelsByProvider = chatModels.reduce(
   (acc, model) => {
