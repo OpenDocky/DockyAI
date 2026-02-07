@@ -260,12 +260,16 @@ export async function POST(request: Request) {
     );
 
     // Determine model & capabilities
+    const pickAutoModel = () => {
+      if (hasImages && visionSupportedModelIds.size > 0) {
+        return Array.from(visionSupportedModelIds)[0];
+      }
+      const firstNonAuto = chatModels.find((m) => m.id !== AUTO_MODEL_ID)?.id;
+      return firstNonAuto ?? DEFAULT_CHAT_MODEL;
+    };
+
     let effectiveModelId =
-      selectedChatModel === AUTO_MODEL_ID
-        ? hasImages && visionSupportedModelIds.size > 0
-          ? Array.from(visionSupportedModelIds)[0]
-          : DEFAULT_CHAT_MODEL
-        : selectedChatModel;
+      selectedChatModel === AUTO_MODEL_ID ? pickAutoModel() : selectedChatModel;
     let effectiveModelSupportsTools = supportsTools(effectiveModelId);
 
     // Block images on non-vision models; if a vision model is available, auto-switch with notice
