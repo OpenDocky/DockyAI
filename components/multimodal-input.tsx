@@ -473,13 +473,25 @@ function PureModelSelectorCompact({
   selectedModelId: string;
   onModelChange?: (modelId: string) => void;
 }) {
+  const getLogoProvider = useCallback(
+    (modelId: string, provider?: string) => {
+      const slug = (modelId.split("/")[0] || "").toLowerCase();
+      if (slug.startsWith("qwen")) return "alibaba";
+      if (slug.startsWith("zai")) return "zai";
+      if (slug.startsWith("moonshotai")) return "moonshotai";
+      if (slug === "glm" || slug.startsWith("glm")) return "zai";
+      return provider?.toLowerCase() || slug;
+    },
+    []
+  );
+
   const [open, setOpen] = useState(false);
 
   const selectedModel =
     chatModels.find((m) => m.id === selectedModelId) ??
     chatModels.find((m) => m.id === DEFAULT_CHAT_MODEL) ??
     chatModels[0];
-  const [provider] = selectedModel.id.split("/");
+  const provider = getLogoProvider(selectedModel.id, selectedModel.provider);
 
   // Provider display names
   const providerNames: Record<string, string> = {
@@ -508,7 +520,10 @@ function PureModelSelectorCompact({
                 key={providerKey}
               >
                 {providerModels.map((model) => {
-                  const logoProvider = model.id.split("/")[0];
+                  const logoProvider = getLogoProvider(
+                    model.id,
+                    model.provider
+                  );
                   return (
                     <ModelSelectorItem
                       key={model.id}
