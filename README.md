@@ -24,10 +24,11 @@
 
 DockyAI intègre plusieurs modèles open & accessibles, par exemple :
 
-- **Qwen 2.5 (7B / 72B)**
+- **Qwen 2.5**
 - **Qwen 3 Coder**
 - **GLM-4.7**
 - **GLM-4.7 Flash**
+- **Devstral 2**
 - *(et d’autres à venir 👀)*
 
 > Les modèles peuvent évoluer au fil du temps.
