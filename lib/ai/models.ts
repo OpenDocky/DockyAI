@@ -67,6 +67,8 @@ const toolSupportedModelIds = new Set<string>([
   "meta-llama/Llama-3.1-70B-Instruct",
   "meta-llama/Llama-3.3-70B-Instruct",
   "Qwen/Qwen2.5-VL-72B-Instruct",
+  "google/gemma-3-27b-it",
+  "google/gemma-2-9b-it",
 ]);
 
 export const supportsTools = (modelId: string) =>
