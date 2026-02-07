@@ -53,7 +53,7 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="container max-w-2xl py-10 space-y-8">
+      <div className="container max-w-3xl py-10 space-y-8 px-4 md:px-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
           <p className="text-muted-foreground">Loading...</p>
@@ -64,7 +64,7 @@ export default function SettingsPage() {
 
   if (error) {
     return (
-      <div className="container max-w-2xl py-10 space-y-8">
+      <div className="container max-w-3xl py-10 space-y-8 px-4 md:px-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
           <p className="text-muted-foreground">
@@ -99,7 +99,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="container max-w-2xl py-10 space-y-8">
+    <div className="container max-w-3xl py-10 space-y-8 px-4 md:px-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
