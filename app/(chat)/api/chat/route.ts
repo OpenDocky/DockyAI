@@ -229,6 +229,13 @@ export async function POST(request: Request) {
         }
 
         try {
+          // Inform UI (transient) about the model actually used
+          dataStream.write({
+            type: "data-textDelta",
+            data: `Modèle utilisé: ${effectiveModelId}`,
+            transient: true,
+          });
+
           const result = await streamText({
             model: getLanguageModel(effectiveModelId),
             system:

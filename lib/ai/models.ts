@@ -34,10 +34,10 @@ export const chatModels: ChatModel[] = [
     description: "A powerful multilingual model",
   },
   {
-    id: "moonshotai/Kimi-K2.5",
-    name: "Kimi K2.5",
+    id: "moonshotai/Kimi-K2-Instruct",
+    name: "Kimi K2",
     provider: "Moonshot",
-    description: "Kimi K2.5, an open-source, native multimodal agentic model.",
+    description: "Kimi K2 from Moonshot AI (Hugging Face responses endpoint).",
   },
 ];
 
@@ -48,6 +48,8 @@ const toolSupportedModelIds = new Set<string>([
   "meta-llama/Llama-3.1-8B-Instruct",
   "meta-llama/Llama-3.1-70B-Instruct",
   "meta-llama/Llama-3.3-70B-Instruct",
+  "moonshotai/Kimi-K2-Instruct",
+  "mistralai/Devstral-2-123B-Instruct-2512",
 ]);
 
 export const supportsTools = (modelId: string) =>
