@@ -261,11 +261,39 @@ export async function POST(request: Request) {
 
     // Determine model & capabilities
     const pickAutoModel = () => {
+      // 1) Vision takes priority if images present
       if (hasImages && visionSupportedModelIds.size > 0) {
         return Array.from(visionSupportedModelIds)[0];
       }
-      const firstNonAuto = chatModels.find((m) => m.id !== AUTO_MODEL_ID)?.id;
-      return firstNonAuto ?? DEFAULT_CHAT_MODEL;
+
+      // 2) Heuristics based on user text
+      const userText =
+        (message?.parts
+          ?.filter((p) => p.type === "text" && "text" in p)
+          .map((p: any) => p.text)
+          .join(" ")
+          .toLowerCase() ?? "");
+
+      const looksLikeCode =
+        /function|const\s+\w+\s*=\s*\(|class\s+\w+|def\s+\w+|import\s+\w+/.test(
+          userText
+        ) || /```/.test(userText);
+
+      if (looksLikeCode) {
+        const coder =
+          chatModels.find((m) =>
+            m.id.toLowerCase().includes("coder")
+          )?.id || chatModels.find((m) => m.id !== AUTO_MODEL_ID)?.id;
+        if (coder) return coder;
+      }
+
+      // 3) Default strong general model
+      const general =
+        chatModels.find((m) => m.id === "openai/gpt-oss-120b")?.id ||
+        chatModels.find((m) => m.id === "google/gemma-3-27b-it")?.id ||
+        chatModels.find((m) => m.id !== AUTO_MODEL_ID)?.id;
+
+      return general ?? DEFAULT_CHAT_MODEL;
     };
 
     let effectiveModelId =
