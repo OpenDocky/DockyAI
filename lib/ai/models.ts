@@ -10,28 +10,28 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "Qwen/Qwen2.5-72B-Instruct",
-    name: "Qwen 2.5",
-    provider: "Alibaba",
-    description: "The most powerful Qwen 2.5",
-  },
-    {
     id: "Qwen/Qwen3-Coder-30B-A3B-Instruct",
     name: "Qwen 3 Coder",
     provider: "Alibaba",
     description: "Optimized for coding tasks",
   },
   {
-    id: "zai-org/GLM-4.7-Flash:novita",
-    name: "GLM 4.7 Flash",
-    provider: "zAI",
-    description: "A powerful multilingual model",
+    id: "Qwen/Qwen2.5-72B-Instruct",
+    name: "Qwen 2.5",
+    provider: "Alibaba",
+    description: "The most powerful Qwen 2.5",
   },
   {
-    id: "zai-org/GLM-4.7:novita",
+    id: "zai-org/GLM-4.7",
     name: "GLM 4.7",
     provider: "zAI",
     description: "Enhanced version of GLM-4.7",
+  },
+  {
+    id: "zai-org/GLM-4.7-Flash",
+    name: "GLM 4.7 Flash",
+    provider: "zAI",
+    description: "A powerful multilingual model",
   },
   {
     id: "mistralai/Devstral-2-123B-Instruct-2512",
