@@ -282,20 +282,25 @@ export async function POST(request: Request) {
             },
           });
 
-          // AI Moderation for AI-generated messages
-          const aiResponse = await result.text; // Get full AI response text
+          // Stream immediately for real-time typing
+          dataStream.merge(result.toUIMessageStream({ sendReasoning: true }));
+
+          // AI Moderation for AI-generated messages (post-stream)
+          const aiResponse = await result.text; // full text after stream
           const isAIResponseUnsafe = await checkMessageWithAI(aiResponse);
 
           if (isAIResponseUnsafe) {
             console.warn(`AI moderation detected unsafe content in AI response: "${aiResponse}"`);
             dataStream.write({
-              type: "data-textDelta", // Corrected type for streaming text
-              data: "Message modéré : le contenu a été jugé inapproprié.", // Content should be under 'data'
+              type: "data-textDelta",
+              data: "Message modéré : le contenu a été jugé inapproprié.",
+              transient: true,
             });
-            dataStream.write({ type: "message-metadata", messageMetadata: { moderation: true, createdAt: new Date().toISOString() } });
+            dataStream.write({
+              type: "message-metadata",
+              messageMetadata: { moderation: true, createdAt: new Date().toISOString() },
+            });
             // The AI message will be saved with the moderation flag in onFinish below
-          } else {
-            dataStream.merge(result.toUIMessageStream({ sendReasoning: true }));
           }
 
           if (titlePromise) {
