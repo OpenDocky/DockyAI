@@ -252,9 +252,7 @@ export async function POST(request: Request) {
                   },
                 }
               : undefined,
-            toolChoice: effectiveModelSupportsTools
-              ? { type: "auto" }
-              : { type: "none" },
+            toolChoice: effectiveModelSupportsTools ? "auto" : "none",
             tools: effectiveModelSupportsTools
               ? {
                   getWeather,
