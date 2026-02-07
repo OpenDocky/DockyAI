@@ -140,6 +140,7 @@ export type ModelSelectorLogoProps = {
     | "wandb"
     | "openai"
     | "qwen"
+    | "mistral"
     | "zhipuai-coding-plan"
     | "perplexity"
     | "openrouter"
@@ -177,6 +178,8 @@ export const ModelSelectorLogo = ({
     src={
       provider === "qwen"
         ? "/logos/qwen.svg"
+        : provider === "mistral"
+        ? "/logos/mistral.svg"
         : `https://models.dev/logos/${provider}.svg`
     }
     unoptimized
