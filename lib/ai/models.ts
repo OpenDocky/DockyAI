@@ -71,10 +71,10 @@ export const chatModels: ChatModel[] = [
     description: "Kimi K2 from Moonshot AI.",
   },
   {
-    id: "meta-llama/Llama-3.1-8B-Instruct",
-    name: "Llama 3.1",
+    id: "meta-llama/Meta-Llama-3-8B-Instruct",
+    name: "Llama 3",
     provider: "Meta",
-    description: "The Meta Llama 3.1 collection of multilingual large language models"
+    description: "The Meta Llama 3 collection of multilingual large language models"
   },
 ];
 
