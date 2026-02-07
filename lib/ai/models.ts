@@ -10,7 +10,7 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "Qwen/Qwen3-Next-80B-A3B-Instruct-GGUF",
+    id: "Qwen/Qwen3-Next-80B-A3B-Instruct",
     name: "Qwen 3 Next",
     provider: "Alibaba",
     description: "The best model of Qwen!"
