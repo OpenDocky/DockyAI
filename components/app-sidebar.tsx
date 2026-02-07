@@ -120,7 +120,24 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarHistory />
         </SidebarContent>
-        <SidebarFooter>{user && <SidebarUserNav />}</SidebarFooter>
+        <SidebarFooter>
+          {user ? (
+            <SidebarUserNav />
+          ) : (
+            <div className="flex w-full gap-2">
+              <Link className="w-full" href="/login">
+                <Button className="w-full" variant="default">
+                  Login
+                </Button>
+              </Link>
+              <Link className="w-full" href="/register">
+                <Button className="w-full" variant="outline">
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+          )}
+        </SidebarFooter>
       </Sidebar>
 
       <AlertDialog
