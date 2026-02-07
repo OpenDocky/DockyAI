@@ -29,7 +29,7 @@ export const chatModels: ChatModel[] = [
     description: "Gemma is a family of lightweight, state-of-the-art open models from Google"
   },
   {
-    id: "google/gemma-2-9b-it",
+    id: "google/gemma-2-9b",
     name: "Gemma 2",
     provider: "Google",
     description: "Gemma is a family of lightweight, state-of-the-art open models from Google"
