@@ -1,72 +1,108 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Chat SDK</h1>
-</a>
+# 🤖 DockyAI
 
-<p align="center">
-    Chat SDK is a free, open-source template built with Next.js and the AI SDK that helps you quickly build powerful chatbot applications.
-</p>
+**DockyAI** est un **hub d’intelligences artificielles gratuit à vie**, accessible depuis le web, qui permet de discuter avec plusieurs modèles IA depuis **une seule interface simple et moderne**.
 
-<p align="center">
-  <a href="https://chat-sdk.dev"><strong>Read Docs</strong></a> ·
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#model-providers"><strong>Model Providers</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
-  <a href="#running-locally"><strong>Running locally</strong></a>
-</p>
-<br/>
+👉 Aucun abonnement requis.  
+👉 Aucun compte premium caché.  
+👉 Juste de l’IA, gratuitement.
 
-## Features
+---
 
-- [Next.js](https://nextjs.org) App Router
-  - Advanced routing for seamless navigation and performance
-  - React Server Components (RSCs) and Server Actions for server-side rendering and increased performance
-- [AI SDK](https://ai-sdk.dev/docs/introduction)
-  - Unified API for generating text, structured objects, and tool calls with LLMs
-  - Hooks for building dynamic chat and generative user interfaces
-  - Supports xAI (default), OpenAI, Fireworks, and other model providers
-- [shadcn/ui](https://ui.shadcn.com)
-  - Styling with [Tailwind CSS](https://tailwindcss.com)
-  - Component primitives from [Radix UI](https://radix-ui.com) for accessibility and flexibility
-- Data Persistence
-  - [Neon Serverless Postgres](https://vercel.com/marketplace/neon) for saving chat history and user data
-  - [Vercel Blob](https://vercel.com/storage/blob) for efficient file storage
-- [Auth.js](https://authjs.dev)
-  - Simple and secure authentication
+## ✨ Fonctionnalités
 
-## Model Providers
+- 💬 **Interface de chat moderne** (inspirée des meilleurs outils IA)
+- 🧠 **Plusieurs modèles IA disponibles**, au même endroit
+- 🔁 **Changement de modèle à la volée** dans une conversation
+- 🌍 **Support multilingue** (FR / EN)
+- 🗂️ **Historique des conversations**
+- ⚡ Rapide, fluide et léger
+- 🔓 **100% gratuit, à vie**
 
-This template uses the [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) to access multiple AI models through a unified interface. The default configuration includes [xAI](https://x.ai) models (`grok-2-vision-1212`, `grok-3-mini`) routed through the gateway.
+---
 
-### AI Gateway Authentication
+## 🧠 Modèles disponibles
 
-**For Vercel deployments**: Authentication is handled automatically via OIDC tokens.
+DockyAI intègre plusieurs modèles open & accessibles, par exemple :
 
-**For non-Vercel deployments**: You need to provide an AI Gateway API key by setting the `AI_GATEWAY_API_KEY` environment variable in your `.env.local` file.
+- **Qwen 2.5 (7B / 72B)**
+- **Qwen 3 Coder**
+- **GLM-4.7**
+- **GLM-4.7 Flash**
+- *(et d’autres à venir 👀)*
 
-With the [AI SDK](https://ai-sdk.dev/docs/introduction), you can also switch to direct LLM providers like [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://ai-sdk.dev/providers/ai-sdk-providers) with just a few lines of code.
+> Les modèles peuvent évoluer au fil du temps.
 
-## Deploy Your Own
+---
 
-You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
+## 🖥️ Aperçu
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/templates/next.js/nextjs-ai-chatbot)
+DockyAI propose :
+- Une page d’accueil simple avec suggestions
+- Un chat fluide type ChatGPT
+- Un sélecteur de modèles intégré directement dans l’UI
 
-## Running locally
+---
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+## 🚀 Objectif du projet
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various AI and authentication provider accounts.
+DockyAI a pour but de :
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+- Centraliser plusieurs IA dans **un seul outil**
+- Rendre l’IA **accessible à tous**
+- Offrir une alternative **simple, gratuite et sans barrière**
+- Expérimenter et apprendre autour des LLM et des interfaces IA
+
+---
+
+## 🔧 Stack
+
+- Frontend moderne (React / Next.js)
+- API IA (multi-providers)
+- Hébergement cloud
+- Sécurité & proxy via Cloudflare
+
+---
+
+## 🛠️ Installation
 
 ```bash
-pnpm install
-pnpm db:migrate # Setup database or apply latest database changes
-pnpm dev
+git clone https://github.com/GraphStats/dockyai-test.git
+cd dockyai-test
+npm install
+npm run dev
 ```
 
-Your app template should now be running on [localhost:3000](http://localhost:3000).
+---
 
+## 📌 Statut du projet
+
+🚧 **En développement actif**
+Des fonctionnalités et des modèles seront ajoutés progressivement.
+
+---
+
+## 📄 Licence
+
+Ce projet est open-source.
+
+---
+
+## ❤️ Crédits
+
+Développé par [Drayko](https://drayko.xyz), pour [OpenDocky](https://github.com/OpenDocky)
+
+Projet passion autour de l’IA et du web.
+
+---
+
+## ⭐ Soutenir le projet
+
+Si DockyAI te plaît :
+
+* ⭐ Star le repo
+* 🐛 Ouvre une issue
+* 💡 Propose des idées
+
+---
+
+> *DockyAI — Un hub IA. Gratuit. Pour tout le monde.*
