@@ -10,12 +10,6 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "Qwen/Qwen2.5-7B-Instruct",
-    name: "Qwen 2.5",
-    provider: "Alibaba",
-    description: "Small and fast Qwen 2.5",
-  },
-  {
     id: "Qwen/Qwen2.5-72B-Instruct",
     name: "Qwen 2.5",
     provider: "Alibaba",
