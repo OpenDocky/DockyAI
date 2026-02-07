@@ -1,5 +1,6 @@
 // Curated list of top models from Hugging Face
 export const DEFAULT_CHAT_MODEL = "meta-llama/Llama-3.1-8B-Instruct";
+export const AUTO_MODEL_ID = "auto";
 
 export type ChatModel = {
   id: string;
@@ -9,6 +10,12 @@ export type ChatModel = {
 };
 
 export const chatModels: ChatModel[] = [
+  {
+    id: AUTO_MODEL_ID,
+    name: "Auto",
+    provider: "auto",
+    description: "Choisit automatiquement le meilleur modèle pour la requête.",
+  },
   {
     id: "openai/gpt-oss-120b",
     name: "GPT-4",
@@ -68,7 +75,6 @@ const toolSupportedModelIds = new Set<string>([
   "meta-llama/Llama-3.3-70B-Instruct",
   "Qwen/Qwen2.5-VL-72B-Instruct",
   "google/gemma-3-27b-it",
-  "google/gemma-2-9b-it",
 ]);
 
 export const supportsTools = (modelId: string) =>
